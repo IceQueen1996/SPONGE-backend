@@ -4,24 +4,6 @@ info:
   version: 2.0.0
   title: SPONGE REST-API documentation
 paths:
-  /debug:
-    get:
-      operationId: debugger.debug
-      tags:
-      - bla
-      summary: bla
-      description: bla
-      responses:
-        "200":
-          description: Successfully read dataset from dataset data operation
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  dataset_ID:
-                    type: integer
-                    description: Id of the dataset
   /dataset:
     get:
       operationId: dataset.read

@@ -1,7 +1,4 @@
-from multiprocessing import Process
-
 from flask import abort
-
 import models
 
 
