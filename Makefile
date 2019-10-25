@@ -11,7 +11,7 @@ build:
 push:	build
 	echo "$(DOCKER_PASSWORD)" | docker login -u "$(DOCKER_USERNAME)" --password-stdin
 	docker tag $(IMAGE_NAME) icequeen1996/$(IMAGE_NAME):$(VERSION)
-	docker push icequeen/$(IMAGE_NAME):$(VERSION)
+	docker push icequeen1996/$(IMAGE_NAME):$(VERSION)
 
 shell:
 	docker run --rm --name $(CONTAINER_NAME)-$(CONTAINER_INSTANCE) -i -t $(PORTS) $(VOLUMES) $(ENV) $(IMAGE_NAME):$(VERSION) /bin/bash
