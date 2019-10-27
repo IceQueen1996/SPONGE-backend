@@ -32,5 +32,3 @@ release:	build
 	make push -e VERSION=$(VERSION)
 
 travis:	push
-
-default:	build
