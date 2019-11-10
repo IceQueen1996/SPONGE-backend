@@ -898,5 +898,179 @@ paths:
                     autocompleteSuggestion:
                       type: string
                       description: One possible autocompletion for the searchString
+  /survivalAnalysis/sampleInformation:
+    get:
+      operationId: survivalAnalysis.get_patient_information
+      tags:
+        - SurvivalAnalysis
+      summary: Retrieve all available clinical information for patients/samples.
+      description: Retrieve all available clinical information for patients/samples.
+      parameters:
+      - name: disease_name
+        in: query
+        description: name of the disease to get (e.g. "kidney clear cell carcinoma" or just "kidney")
+        required: true
+        schema:
+          type: string
+      - name: sample_ID
+        in: query
+        description: A comma-separated list of sample_ID of the patient/sample of interest (e.g. TCGA-DK-A3X2, TCGA-ZF-A9R1)
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+          minItems: 0
+        explode: false
+        style: form
+      responses:
+        "200":
+          description: Retrieve all available clinical information for patients/samples.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  properties:
+                    patient_information_ID:
+                      type: integer
+                      description: internal database primary key
+                    dataset:
+                      type: string
+                      description: information about the dataset
+                    sample_ID:
+                      type: string
+                      description: A comma-separated list of sample_ID of the patient/sample of interest (e.g. TCGA-DK-A3X2, TCGA-ZF-A9R1)
+                    disease_status:
+                      type: integer
+                      description: Information about the disease status (0 = patient is dead, 1 = patient is alive) at the end of observation
+                    survival_time:
+                      type: integer
+                      description: Time of survival in days
+  /survivalAnalysis/getRates:
+    get:
+      operationId: survivalAnalysis.get_survival_rate
+      tags:
+        - SurvivalAnalysis
+      summary: Retrieve all raw data for kaplan meier plots.
+      description: Retrieve all raw data for kaplan meier plots.
+      parameters:
+      - name: disease_name
+        in: query
+        description: name of the disease to get (e.g. "kidney clear cell carcinoma" or just "kidney")
+        required: true
+        schema:
+          type: string
+      - name: ensg_number
+        in: query
+        description: A comma-separated list of ensg numbers of the gene(s) of interest(e.g. ENSG00000259090, ENSG00000217289)
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+          minItems: 0
+        explode: false
+        style: form
+      - name: gene_symbol
+        in: query
+        description: A comma-separated list of gene symbol(s) of the gene of interest(e.g. SEPT7P1,TIGAR)
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+          minItems: 0
+        explode: false
+        style: form
+      - name: sample_ID
+        in: query
+        description: A comma-separated list of sample_ID of the patient/sample of interest (e.g. TCGA-DK-A3X2, TCGA-ZF-A9R1)
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+          minItems: 0
+        explode: false
+        style: form
+      responses:
+        "200":
+          description: Retrieve all available clinical information for patients/samples.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  properties:
+                    dataset:
+                      type: string
+                      description: information about the dataset
+                    gene:
+                      type: string
+                      description: information about the ceRNA
+                    sample_ID:
+                      type: string
+                      description: Id of the sample/patient
+                    overexpression:
+                      type: integer
+                      description: Information about expression value of the gene (0 = underexpression, gene expression <= mean gene expression over all samples, 1 = overexpression, gene expression >= mean gene expression over all samples)
+  /survivalAnalysis/getPValues:
+    get:
+      operationId: survivalAnalysis.get_survival_pValue
+      tags:
+      - SurvivalAnalysis
+      summary: Retrieve pValues from log rank test based on raw survival analysis data
+      description: Retrieve pValues from log rank test based on raw survival analysis data
+      parameters:
+      - name: disease_name
+        in: query
+        description: name of the disease to get (e.g. "kidney clear cell carcinoma" or just "kidney")
+        required: true
+        schema:
+          type: string
+      - name: ensg_number
+        in: query
+        description: A comma-separated list of ensg numbers of the gene(s) of interest(e.g. ENSG00000259090, ENSG00000217289)
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+          minItems: 0
+        explode: false
+        style: form
+      - name: gene_symbol
+        in: query
+        description: A comma-separated list of gene symbol(s) of the gene of interest(e.g. SEPT7P1,TIGAR)
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+          minItems: 0
+        explode: false
+        style: form
+      responses:
+        "200":
+          description: Retrieve pValues from log rank test based on raw survival analysis data
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  properties:
+                    dataset:
+                      type: string
+                      description: information about the dataset
+                    gene:
+                      type: string
+                      description: information about the ceRNA
+                    pValue:
+                      type: number
+                      description: pValue of log rank test
+
+
+
 servers:
 - url: /sponge
