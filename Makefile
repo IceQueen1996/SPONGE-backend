@@ -1,5 +1,6 @@
 PORTS = 5000:5000
 VERSION = latest
+
 IMAGE_NAME = icequeen1996/spongeapp
 CONTAINER_NAME = spongeapp
 CONTAINER_INSTANCE = default
@@ -30,10 +31,4 @@ rm:
 release:	build
 	make push -e VERSION=$(VERSION)
 
-test:
-	pip install -r requirements.txt
-	python -m unittest discover TestCases
-
-travis:
-	test
-	push
+travis:    push
