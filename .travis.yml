@@ -10,5 +10,4 @@ branches:
   - master
 
 script:
-  make test
   make travis
