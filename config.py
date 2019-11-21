@@ -1,11 +1,8 @@
 import os
-
 import connexion
 from flask_cors import CORS
 from flask_marshmallow import Marshmallow
 from flask_sqlalchemy import SQLAlchemy
-
-# from memory_profiler import memory_usage
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 
@@ -20,7 +17,6 @@ CORS(app)
 app.config['SQLALCHEMY_ECHO'] = False
 app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv("SPONGE_DB_URI")
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-
 
 @app.after_request
 def add_header(response):

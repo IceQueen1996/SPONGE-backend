@@ -31,4 +31,4 @@ rm:
 release:	build
 	make push -e VERSION=$(VERSION)
 
-travis:	push
+travis:    push
