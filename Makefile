@@ -1,6 +1,5 @@
 PORTS = 5000:5000
 VERSION = latest
-
 IMAGE_NAME = icequeen1996/spongeapp
 CONTAINER_NAME = spongeapp
 CONTAINER_INSTANCE = default
