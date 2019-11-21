@@ -9,5 +9,4 @@ branches:
   only:
   - master
 
-script:
-  make travis
+script: make travis
