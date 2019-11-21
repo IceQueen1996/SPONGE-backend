@@ -30,4 +30,9 @@ rm:
 release:	build
 	make push -e VERSION=$(VERSION)
 
-travis:    push
+test:
+    pip install -r requirements.txt
+    python -m unittest discover TestCases
+
+travis:
+ push
