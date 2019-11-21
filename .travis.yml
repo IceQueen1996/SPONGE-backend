@@ -10,4 +10,5 @@ branches:
   - master
 
 script:
-  make travis
+  - python -m unittest discover TestCases
+  - make travis
