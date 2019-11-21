@@ -35,4 +35,5 @@ test:
 	python -m unittest discover TestCases
 
 travis:
- push
+	test
+	push
