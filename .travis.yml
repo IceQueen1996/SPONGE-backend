@@ -2,6 +2,7 @@ language: python
 
 services:
   - docker
+  - mysql
 
 branches:
   only:
@@ -9,6 +10,9 @@ branches:
 
 install:
   - pip install -r requirements.txt
+
+before_script:
+  - mysql -u root --password="" < TestCases/travis.sql
 
 script:
   - python -m unittest discover TestCases
