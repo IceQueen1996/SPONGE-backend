@@ -54,8 +54,6 @@ class TestDataset(unittest.TestCase):
         # retrieve current API response to request
         api_response = dataset.read(disease_name= "breast invasive carcinoma")
 
-        print(api_response)
-
         # assert that the two output the same
         self.assertEqual(mock_response, api_response)
 
