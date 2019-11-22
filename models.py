@@ -370,6 +370,4 @@ class SurvivalPValueSchema(ma.ModelSchema):
         model = SurvivalPValue
         sql_session = db.session
     dataset = ma.Nested(DatasetSchema, only=("disease_name"))
-    gene = ma.Nested(GeneSchema, only=("ensg_number"))       
-
-
+    gene = ma.Nested(GeneSchema, only=("ensg_number"))
