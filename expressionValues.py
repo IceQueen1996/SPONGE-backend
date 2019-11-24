@@ -2,7 +2,6 @@ from flask import abort
 
 import models
 
-
 def get_gene_expr(disease_name=None, ensg_number=None, gene_symbol=None):
     """
     :param disease_name: disease_name of interest
