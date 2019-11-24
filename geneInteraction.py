@@ -84,7 +84,6 @@ def read_all_genes(disease_name=None, ensg_number=None, gene_symbol=None, gene_t
     if mscor is not None:
         if mscorDirection == "<":
             queries.append(models.GeneInteraction.mscor < mscor)
-            print(models.GeneInteraction.mscor < mscor)
         else:
             queries.append(models.GeneInteraction.mscor > mscor)
     if correlation is not None:
