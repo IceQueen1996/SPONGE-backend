@@ -123,7 +123,7 @@ class TestDataset(unittest.TestCase):
             # retrieve current API response to request
             self.assertEqual(geneInteraction.read_specific_interaction(disease_name="bladder urothelial carcinoma", ensg_number=['ENSG00000023041']), 404)
 
-    def test_findAll_disease_and_ensg(self):
+    def test_findSpecific_disease_and_ensg(self):
         app.config["TESTING"] = True
         self.app = app.test_client()
 
@@ -136,7 +136,7 @@ class TestDataset(unittest.TestCase):
         # assert that the two output the same
         self.assertEqual(mock_response, api_response)
 
-    def test_findAll_disease_and_gene_symbol(self):
+    def test_findSpecific_disease_and_gene_symbol(self):
         app.config["TESTING"] = True
         self.app = app.test_client()
 
