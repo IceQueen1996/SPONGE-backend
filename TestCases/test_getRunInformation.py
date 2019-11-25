@@ -17,8 +17,6 @@ def test_read_runInformation(disease_name=None):
         .filter(models.Dataset.disease_name.like("%" + disease_name + "%")) \
         .all()
 
-    print(data)
-
     if len(data) > 0:
         # Serialize the data for the response
         return models.RunSchema(many=True).dump(data).data
