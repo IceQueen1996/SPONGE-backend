@@ -122,11 +122,11 @@ class TestDataset(unittest.TestCase):
         self.app = app.test_client()
 
         # retrieve correct database response to request
-        mock_response = test_read_all_gene_network_analysis(disease_name='bladder urothelial carcinoma', gene_type='protein coding', limit=50)
+        mock_response = test_read_all_gene_network_analysis(disease_name='bladder urothelial carcinoma', gene_type='protein_coding', limit=50)
 
         # retrieve current API response to request
         api_response = geneInteraction.read_all_gene_network_analysis(disease_name='bladder urothelial carcinoma',
-                                                                      gene_type='protein coding', limit=50)
+                                                                      gene_type='protein_coding', limit=50)
         # assert that the two output the same
         self.assertEqual(mock_response, api_response)
 
@@ -135,10 +135,10 @@ class TestDataset(unittest.TestCase):
         self.app = app.test_client()
 
         # retrieve correct database response to request
-        mock_response = test_read_all_gene_network_analysis(disease_name='bladder urothelial carcinoma', gene_type='protein coding', betweenness=5000, sorting="betweenness", descending=True, limit=50)
+        mock_response = test_read_all_gene_network_analysis(disease_name='bladder urothelial carcinoma', gene_type='protein_coding', betweenness=5000, sorting="betweenness", descending=True, limit=50)
 
         # retrieve current API response to request
-        api_response = geneInteraction.read_all_gene_network_analysis(disease_name='bladder urothelial carcinoma', gene_type='protein coding', betweenness=5000, sorting="betweenness", descending=True, limit=50)
+        api_response = geneInteraction.read_all_gene_network_analysis(disease_name='bladder urothelial carcinoma', gene_type='protein_coding', betweenness=5000, sorting="betweenness", descending=True, limit=50)
         # assert that the two output the same
         self.assertEqual(mock_response, api_response)
 
@@ -147,10 +147,10 @@ class TestDataset(unittest.TestCase):
         self.app = app.test_client()
 
         # retrieve correct database response to request
-        mock_response = test_read_all_gene_network_analysis(disease_name='bladder urothelial carcinoma', gene_type='protein coding', betweenness=5000, sorting="betweenness", descending=False, limit=50)
+        mock_response = test_read_all_gene_network_analysis(disease_name='bladder urothelial carcinoma', gene_type='protein_coding', betweenness=5000, sorting="betweenness", descending=False, limit=50)
 
         # retrieve current API response to request
-        api_response = geneInteraction.read_all_gene_network_analysis(disease_name='bladder urothelial carcinoma', gene_type='protein coding', betweenness=5000, sorting="betweenness", descending=False, limit=50)
+        api_response = geneInteraction.read_all_gene_network_analysis(disease_name='bladder urothelial carcinoma', gene_type='protein_coding', betweenness=5000, sorting="betweenness", descending=False, limit=50)
         # assert that the two output the same
         self.assertEqual(mock_response, api_response)
 
@@ -159,10 +159,10 @@ class TestDataset(unittest.TestCase):
         self.app = app.test_client()
 
         # retrieve correct database response to request
-        mock_response = test_read_all_gene_network_analysis(disease_name='bladder urothelial carcinoma', gene_type='protein coding', eigenvector=0.5, sorting="eigenvector", descending=True, limit=50)
+        mock_response = test_read_all_gene_network_analysis(disease_name='bladder urothelial carcinoma', gene_type='protein_coding', eigenvector=0.5, sorting="eigenvector", descending=True, limit=50)
 
         # retrieve current API response to request
-        api_response = geneInteraction.read_all_gene_network_analysis(disease_name='bladder urothelial carcinoma', gene_type='protein coding', eigenvector=0.5, sorting="eigenvector", descending=True, limit=50)
+        api_response = geneInteraction.read_all_gene_network_analysis(disease_name='bladder urothelial carcinoma', gene_type='protein_coding', eigenvector=0.5, sorting="eigenvector", descending=True, limit=50)
         # assert that the two output the same
         self.assertEqual(mock_response, api_response)
 
@@ -171,10 +171,10 @@ class TestDataset(unittest.TestCase):
         self.app = app.test_client()
 
         # retrieve correct database response to request
-        mock_response = test_read_all_gene_network_analysis(disease_name='bladder urothelial carcinoma', gene_type='protein coding', eigenvector=0.5, sorting="eigenvector", descending=False, limit=50)
+        mock_response = test_read_all_gene_network_analysis(disease_name='bladder urothelial carcinoma', gene_type='protein_coding', eigenvector=0.5, sorting="eigenvector", descending=False, limit=50)
 
         # retrieve current API response to request
-        api_response = geneInteraction.read_all_gene_network_analysis(disease_name='bladder urothelial carcinoma', gene_type='protein coding', eigenvector=0.5, sorting="eigenvector", descending=False, limit=50)
+        api_response = geneInteraction.read_all_gene_network_analysis(disease_name='bladder urothelial carcinoma', gene_type='protein_coding', eigenvector=0.5, sorting="eigenvector", descending=False, limit=50)
         # assert that the two output the same
         self.assertEqual(mock_response, api_response)
 
@@ -183,10 +183,10 @@ class TestDataset(unittest.TestCase):
         self.app = app.test_client()
 
         # retrieve correct database response to request
-        mock_response = test_read_all_gene_network_analysis(disease_name='bladder urothelial carcinoma', gene_type='protein coding', degree=2500, sorting="degree", descending=True, limit=50)
+        mock_response = test_read_all_gene_network_analysis(disease_name='bladder urothelial carcinoma', gene_type='protein_coding', degree=2500, sorting="degree", descending=True, limit=50)
 
         # retrieve current API response to request
-        api_response = geneInteraction.read_all_gene_network_analysis(disease_name='bladder urothelial carcinoma', gene_type='protein coding', degree=2500, sorting="degree", descending=True, limit=50)
+        api_response = geneInteraction.read_all_gene_network_analysis(disease_name='bladder urothelial carcinoma', gene_type='protein_coding', degree=2500, sorting="degree", descending=True, limit=50)
         # assert that the two output the same
         self.assertEqual(mock_response, api_response)
 
@@ -195,9 +195,9 @@ class TestDataset(unittest.TestCase):
         self.app = app.test_client()
 
         # retrieve correct database response to request
-        mock_response = test_read_all_gene_network_analysis(disease_name='bladder urothelial carcinoma', gene_type='protein coding', degree=2500, sorting="degree", descending=False, limit=50)
+        mock_response = test_read_all_gene_network_analysis(disease_name='bladder urothelial carcinoma', gene_type='protein_coding', degree=2500, sorting="degree", descending=False, limit=50)
 
         # retrieve current API response to request
-        api_response = geneInteraction.read_all_gene_network_analysis(disease_name='bladder urothelial carcinoma', gene_type='protein coding', degree=2500, sorting="degree", descending=False, limit=50)
+        api_response = geneInteraction.read_all_gene_network_analysis(disease_name='bladder urothelial carcinoma', gene_type='protein_coding', degree=2500, sorting="degree", descending=False, limit=50)
         # assert that the two output the same
         self.assertEqual(mock_response, api_response)
