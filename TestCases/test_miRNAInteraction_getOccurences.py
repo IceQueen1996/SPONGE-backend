@@ -75,7 +75,11 @@ def test_read_all_mirna(disease_name=None, mimat_number=None, hs_number=None, oc
         .slice(offset, offset + limit) \
         .all()
 
-    return models.occurencesMiRNASchema(many=True).dump(interaction_result).data
+    if len(interaction_result) > 0:
+        # Serialize the data for the response depending on parameter all
+        return models.occurencesMiRNASchema(many=True).dump(interaction_result).data
+    else:
+        abort(404, "No information with given parameters found")
 
 ########################################################################################################################
 """Test Cases for Endpoint ​/miRNAInteraction​/getOccurences"""
