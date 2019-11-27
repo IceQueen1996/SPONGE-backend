@@ -109,7 +109,7 @@ class TestDataset(unittest.TestCase):
         self.app = app.test_client()
 
         # retrieve correct database response to request
-        mock_response = test_get_survival_pValue(disease_name='bladder urothelial carcinoma', ensg_number=['ENSG00000172137','ENSG00000078237'])
+        mock_response = test_get_survival_pValue(disease_name='bladder urothelial carcinoma', ensg_number=['ENSG00000242268','ENSG00000078237'])
 
         # retrieve current API response to request
         api_response = survivalAnalysis.get_survival_pValue(disease_name='bladder urothelial carcinoma',
@@ -122,7 +122,7 @@ class TestDataset(unittest.TestCase):
         self.app = app.test_client()
 
         # retrieve correct database response to request
-        mock_response = test_get_survival_pValue(disease_name='bladder urothelial carcinoma', gene_symbol=['CALB2','TIGAR'])
+        mock_response = test_get_survival_pValue(disease_name='bladder urothelial carcinoma', gene_symbol=['LINC02082','TIGAR'])
 
         # retrieve current API response to request
         api_response = survivalAnalysis.get_survival_pValue(disease_name='bladder urothelial carcinoma',

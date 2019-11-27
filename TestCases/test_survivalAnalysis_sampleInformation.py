@@ -70,9 +70,9 @@ class TestDataset(unittest.TestCase):
         self.app = app.test_client()
 
         # retrieve correct database response to request
-        mock_response = test_get_patient_information(disease_name='bladder urothelial carcinoma', sample_ID=['TCGA - BT - A20T'])
+        mock_response = test_get_patient_information(disease_name='bladder urothelial carcinoma', sample_ID=['TCGA-BT-A20T'])
 
         # retrieve current API response to request
-        api_response = survivalAnalysis.get_patient_information(disease_name='bladder urothelial carcinoma', sample_ID=['TCGA - BT - A20T'])
+        api_response = survivalAnalysis.get_patient_information(disease_name='bladder urothelial carcinoma', sample_ID=['TCGA-BT-A20T'])
         # assert that the two output the same
         self.assertEqual(mock_response, api_response)
