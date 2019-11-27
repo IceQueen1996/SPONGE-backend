@@ -1,7 +1,9 @@
+from config import *
+from werkzeug.exceptions import HTTPException
+import models, externalInformation, unittest
 from flask import abort
-import models
 
-def getAutocomplete(searchString):
+def test_getAutocomplete(searchString):
     """
     Funtion to retrieve the autocomplete possibilities for the webside
     :param searchString: String (ensg_number, gene_symbol, hs_number or mimat_number)
@@ -41,3 +43,41 @@ def getAutocomplete(searchString):
             return models.GeneSchemaSymbol(many=True).dump(data).data
         else:
             abort(404, "No gene symbol found for the given String")
+
+########################################################################################################################
+"""Test Cases for Endpoint ​/stringSearch"""
+########################################################################################################################
+
+class TestDataset(unittest.TestCase):
+
+    def test_abort_error_no_ensg(self):
+        app.config["TESTING"] = True
+        self.app = app.test_client()
+
+        with self.assertRaises(HTTPException) as http_error:
+            # retrieve current API response to request
+            self.assertEqual(externalInformation.getAutocomplete(searchString="ENSGforrbar"), 404)
+
+    def test_abort_error_no_hs(self):
+        app.config["TESTING"] = True
+        self.app = app.test_client()
+
+        with self.assertRaises(HTTPException) as http_error:
+            # retrieve current API response to request
+            self.assertEqual(externalInformation.getAutocomplete(searchString="HSAforbaar"), 404)
+
+    def test_abort_error_no_mimat(self):
+        app.config["TESTING"] = True
+        self.app = app.test_client()
+
+        with self.assertRaises(HTTPException) as http_error:
+            # retrieve current API response to request
+            self.assertEqual(externalInformation.getAutocomplete(searchString="MIMATfoobar"), 404)
+
+    def test_abort_error_no_symbol(self):
+        app.config["TESTING"] = True
+        self.app = app.test_client()
+
+        with self.assertRaises(HTTPException) as http_error:
+            # retrieve current API response to request
+            self.assertEqual(externalInformation.getAutocomplete(searchString="helloWorld"), 404)

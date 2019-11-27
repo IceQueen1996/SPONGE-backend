@@ -1,5 +1,4 @@
 from flask import abort
-
 import models
 
 def get_patient_information(disease_name=None, sample_ID=None):

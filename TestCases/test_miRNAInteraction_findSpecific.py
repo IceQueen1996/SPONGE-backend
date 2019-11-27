@@ -1,7 +1,6 @@
 from config import *
 import models, geneInteraction, unittest
 from flask import abort
-import sqlalchemy as sa
 from werkzeug.exceptions import HTTPException
 
 def test_read_all_to_one_mirna(disease_name=None, mimat_number=None, hs_number=None, limit=15000, offset=0,

@@ -1,7 +1,6 @@
 import sqlalchemy as sa
 from flask import abort
 from sqlalchemy import desc
-
 import models
 
 
