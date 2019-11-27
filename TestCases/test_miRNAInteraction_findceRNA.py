@@ -166,7 +166,7 @@ class TestDataset(unittest.TestCase):
 
         # retrieve current API response to request
         api_response = geneInteraction.read_mirna_for_specific_interaction(disease_name='bladder urothelial carcinoma',
-                                                                      gene_type='protein_coding', limit=50)
+                                                                      gene_type='protein_coding')
         # assert that the two output the same
         self.assertEqual(mock_response, api_response)
 
@@ -175,10 +175,10 @@ class TestDataset(unittest.TestCase):
         self.app = app.test_client()
 
         # retrieve correct database response to request
-        mock_response = test_read_mirna_for_specific_interaction(disease_name='bladder urothelial carcinoma', ensg_number=['ENSG00000172137','ENSG00000078237'])
+        mock_response = test_read_mirna_for_specific_interaction(disease_name='bladder urothelial carcinoma', ensg_number=['ENSG00000007312','ENSG00000113657'])
 
         # retrieve current API response to request
-        api_response = geneInteraction.read_mirna_for_specific_interaction(disease_name='bladder urothelial carcinoma', ensg_number=['ENSG00000172137','ENSG00000078237'])
+        api_response = geneInteraction.read_mirna_for_specific_interaction(disease_name='bladder urothelial carcinoma', ensg_number=['ENSG00000007312','ENSG00000113657'])
 
         # assert that the two output the same
         self.assertEqual(mock_response, api_response)
@@ -188,10 +188,10 @@ class TestDataset(unittest.TestCase):
         self.app = app.test_client()
 
         # retrieve correct database response to request
-        mock_response = test_read_mirna_for_specific_interaction(disease_name='bladder urothelial carcinoma', gene_symbol=['CALB2', 'TIGAR'])
+        mock_response = test_read_mirna_for_specific_interaction(disease_name='bladder urothelial carcinoma', gene_symbol=['CD79B', 'DPYSL3'])
 
         # retrieve current API response to request
-        api_response = geneInteraction.read_mirna_for_specific_interaction(disease_name='bladder urothelial carcinoma', gene_symbol=['CALB2', 'TIGAR'])
+        api_response = geneInteraction.read_mirna_for_specific_interaction(disease_name='bladder urothelial carcinoma', gene_symbol=['CD79B', 'DPYSL3'])
 
         # assert that the two output the same
         self.assertEqual(mock_response, api_response)

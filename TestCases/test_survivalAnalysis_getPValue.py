@@ -78,7 +78,7 @@ class TestDataset(unittest.TestCase):
 
         with self.assertRaises(HTTPException) as http_error:
             # retrieve current API response to request
-            self.assertEqual(survivalAnalysis.get_survival_pValue(ensg_number=["ENSGfoobar"]), 404)
+            self.assertEqual(survivalAnalysis.get_survival_pValue(disease_name="bladder urothelial carcinoma", ensg_number=["ENSGfoobar"]), 404)
 
     def test_abort_error_gene_symbol(self):
         app.config["TESTING"] = True
@@ -86,7 +86,7 @@ class TestDataset(unittest.TestCase):
 
         with self.assertRaises(HTTPException) as http_error:
             # retrieve current API response to request
-            self.assertEqual(survivalAnalysis.get_survival_pValue(gene_symbol=["foobar"]), 404)
+            self.assertEqual(survivalAnalysis.get_survival_pValue(disease_name="bladder urothelial carcinoma", gene_symbol=["foobar"]), 404)
 
     def test_abort_error_ensg_and_gene_symbol(self):
         app.config["TESTING"] = True
@@ -94,7 +94,7 @@ class TestDataset(unittest.TestCase):
 
         with self.assertRaises(HTTPException) as http_error:
             # retrieve current API response to request
-            self.assertEqual(survivalAnalysis.get_survival_pValue(ensg_number=["ENSGfoobar"],gene_symbol=["foobar"]), 404)
+            self.assertEqual(survivalAnalysis.get_survival_pValue(disease_name="bladder urothelial carcinoma", ensg_number=["ENSGfoobar"],gene_symbol=["foobar"]), 404)
 
     def test_abort_error_no_data(self):
         app.config["TESTING"] = True
