@@ -26,10 +26,8 @@ def read(disease_name=None):
     if len(data) > 0:
         # Serialize the data for the response
         return models.DatasetSchema(many=True).dump(data).data
-        app.logger.info('dataset %s succesfully found', diesease_name)
     else:
         abort(404, 'No data found for name: {disease_name}'.format(disease_name=disease_name))
-        app.logger.info('No data found for name: %s', disease_name)
 
 
 def read_runInformation(disease_name=None):
