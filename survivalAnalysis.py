@@ -22,8 +22,6 @@ def get_patient_information(disease_name=None, sample_ID=None):
 
     # save all needed queries to get correct results
     queries = []
-
-    # if specific disease_name is given:
     if disease_name is not None:
         dataset = models.Dataset.query \
             .filter(models.Dataset.disease_name.like("%" + disease_name + "%")) \
