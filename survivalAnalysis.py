@@ -20,8 +20,8 @@ def get_patient_information(disease_name=None, sample_ID=None):
     #else:
     #    abort(404, "No samples found for given IDs)")
 
-    ## save all needed queries to get correct results
-    #queries = [models.PatientInformation.sample_ID.in_(sample_IDs)]
+    # save all needed queries to get correct results
+    queries = []
 
     # if specific disease_name is given:
     if disease_name is not None:
