@@ -4,7 +4,7 @@ from sqlalchemy import desc,exists
 import models
 
 
-def read_all_genes(disease_name=None, ensg_number=None, gene_symbol=None, gene_type=None, pValue=None,
+def read_all_genes(disease_name=None, ensg_number=None, gene_symbol=None, gene_type=None, pValue = 0.05,
                    pValueDirection="<", mscor=None, mscorDirection="<", correlation=None, correlationDirection="<",
                    sorting=None, descending=True, limit=100, offset=0, information=True):
     """
@@ -196,15 +196,15 @@ def read_specific_interaction(disease_name=None, ensg_number=None, gene_symbol=N
         abort(404, "No information with given parameters found")
 
 
-def read_all_gene_network_analysis(disease_name=None, gene_type=None, betweenness=None, degree=None, eigenvector=None,
+def read_all_gene_network_analysis(disease_name=None, gene_type=None, minBetweenness=None, minNodeDegree=None, minEigenvector=None,
                                    sorting=None, descending=True, limit=100, offset=0):
     """
     This function responds to a request for /sponge/ceRNANetwork/ceRNAInteraction/findAll/networkAnalysis
     and returns all interactions the given identification (ensg_number or gene_symbol) in all available datasets is in involved and satisfies the given filters
     :param disease_name: isease_name of interest
-    :param betweenness: betweenness cutoff (>)
-    :param degree: degree cutoff (>)
-    :param eigenvector: eigenvector cutoff (>)
+    :param minBetweenness: betweenness cutoff (>)
+    :param minNodeDegree: degree cutoff (>)
+    :param minEigenvector: eigenvector cutoff (>)
     :param sorting: how the results of the db query should be sorted
     :param descending: should the results be sorted in descending or ascending order
     :param limit: number of results that shouls be shown
@@ -232,12 +232,12 @@ def read_all_gene_network_analysis(disease_name=None, gene_type=None, betweennes
             abort(404, "No dataset with given disease_name found")
 
     # filter further depending on given statistics cutoffs
-    if betweenness is not None:
-        queries.append(models.networkAnalysis.betweeness > betweenness)
-    if degree is not None:
-        queries.append(models.networkAnalysis.node_degree > degree)
-    if eigenvector is not None:
-        queries.append(models.networkAnalysis.eigenvector > eigenvector)
+    if minBetweenness is not None:
+        queries.append(models.networkAnalysis.betweeness > minBetweenness)
+    if minNodeDegree is not None:
+        queries.append(models.networkAnalysis.node_degree > minNodeDegree)
+    if minEigenvector is not None:
+        queries.append(models.networkAnalysis.eigenvector > minEigenvector)
     if gene_type is not None:
         queries.append(models.Gene.gene_type == gene_type)
 
@@ -313,7 +313,19 @@ def testGeneInteraction(ensg_number = None, gene_symbol=None):
     for r in run:
         tmp = session.execute("SELECT EXISTS(SELECT * FROM interactions_genegene where run_ID = " + str(r.run_ID) +
                                       " and gene_ID1 = " + str(gene_ID[0]) + " limit 1) as include;").fetchone()
-        check = {"disease_name" : r.disease_name, "run_ID" : r.run_ID, "include" : tmp[0] }
+
+        if (tmp[0] == 1):
+            check = {"data_origin": r.data_origin,"disease_name" : r.disease_name, "run_ID" : r.run_ID, "include" : tmp[0] }
+        else:
+            tmp2  = session.execute("SELECT EXISTS(SELECT * FROM interactions_genegene where run_ID = " + str(r.run_ID) +
+                                      " and gene_ID2 = " + str(gene_ID[0]) + " limit 1) as include;").fetchone()
+            if (tmp2[0] == 1):
+                check = {"data_origin": r.data_origin, "disease_name": r.disease_name, "run_ID": r.run_ID,
+                         "include": 1}
+            else:
+                check = {"data_origin": r.data_origin, "disease_name": r.disease_name, "run_ID": r.run_ID,
+                         "include": 0}
+
         result.append(check)
 
     schema = models.checkGeneInteractionProCancer(many=True)
@@ -480,7 +492,7 @@ def read_mirna_for_specific_interaction(disease_name=None, ensg_number=None, gen
     if ensg_number is not None and (gene_symbol is not None or gene_type is not None) or (
             gene_symbol is not None and gene_type is not None):
         abort(404,
-              "More than one identifikation paramter is given. Please choose one out of (ensg number, gene symbol or gene type)")
+              "More than one identification paramter is given. Please choose one out of (ensg number, gene symbol or gene type)")
 
     queries = []
     # if specific disease_name is given:
@@ -539,3 +551,69 @@ def read_mirna_for_specific_interaction(disease_name=None, ensg_number=None, gen
             return models.miRNAInteractionShortSchema(many=True).dump(interaction_result).data
         else:
             abort(404, "No data found with input parameter")
+
+
+def getGeneCounts(disease_name=None, ensg_number=None, gene_symbol=None, minCountAll = None, minCountSign=None):
+    """
+    This function responds to a request for /geneCounts
+    and returns gene(s) of interest with respective counts in disease of interest.
+    :param disease_name: disease_name of interest
+    :param ensg_number: ensg number of the genes of interest
+    :param gene_symbol: gene symbol of the genes of interest
+    :param minCountAll: defines the minimal number of times a gene has to be involved in the complete network
+    :param minCountSign: defines the minimal number of times a gene has to be involved in significant (p.adj < 0.05) interactionss
+
+    :return: all genes with counts.
+    """
+
+    # test if any of the two identification possibilities is given or disease_name is specified
+    if ensg_number is None and gene_symbol is None and disease_name is None:
+        abort(404, "One of the two possible identification numbers must be provided or the disease_name must be specified.")
+
+    queries = []
+    # if specific disease_name is given:
+    if disease_name is not None:
+        run = models.Run.query.join(models.Dataset, models.Dataset.dataset_ID == models.Run.dataset_ID) \
+            .filter(models.Dataset.disease_name.like("%" + disease_name + "%")) \
+            .all()
+
+        if len(run) > 0:
+            run_IDs = [i.run_ID for i in run]
+            queries.append(models.GeneCount.run_ID.in_(run_IDs))
+        else:
+            abort(404, "No dataset with given disease_name found")
+
+    gene = []
+    # if ensg_numer is given to specify gene(s), get the intern gene_ID(primary_key) for requested ensg_nr(gene_ID)
+    if ensg_number is not None:
+        gene = models.Gene.query \
+            .filter(models.Gene.ensg_number.in_(ensg_number)) \
+            .all()
+    # if gene_symbol is given to specify gene(s), get the intern gene_ID(primary_key) for requested gene_symbol(gene_ID)
+    elif gene_symbol is not None:
+        gene = models.Gene.query \
+            .filter(models.Gene.gene_symbol.in_(gene_symbol)) \
+            .all()
+
+    if len(gene) > 0:
+        gene_ID = [i.gene_ID for i in gene]
+        queries.append(models.GeneCount.gene_ID.in_(gene_ID))
+    else:
+        abort(404, "No gene found for given ensg_number(s) or gene_symbol(s)")
+
+    #add count filter if provided
+    if minCountAll is not None:
+        queries.append(models.GeneCount.count_all >= minCountAll)
+    if minCountSign is not None:
+        queries.append(models.GeneCount.count_sign >= minCountSign)
+
+    #get results
+    result = models.GeneCount.query \
+        .filter(*queries)\
+        .all()
+
+    if len(result) > 0:
+        # Serialize the data for the response depending on parameter all
+        return models.GeneCountSchema(many=True).dump(result).data
+    else:
+        abort(404, "No data found with input parameter")

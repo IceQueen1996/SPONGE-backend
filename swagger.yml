@@ -112,7 +112,7 @@ paths:
                         description: Internal database ID of the specific parameter setting (=run).
                     variance_cutoff:
                         type: string
-                        description: Only consider genes and miRNA with variance > var.threshold. If this parameter is NULL no variance filtering is performed (Paramter name in SPONGE method is var.threshold)         
+                        description: Only consider genes and miRNA with variance > var.threshold. If this parameter is NULL no variance filtering is performed (Paramter name in SPONGE method is var.threshold)
   /ceRNAInteraction/checkGeneInteraction:
     get:
       operationId: geneInteraction.testGeneInteraction
@@ -123,13 +123,13 @@ paths:
       parameters:
       - name: ensg_number
         in: query
-        description: A comma-separated list of ensg number(s) of the gene(s) of interest (e.g. ENSG00000259090, ENSG00000217289).
+        description: Ensg number of the gene of interest (e.g. ENSG00000259090).
         required: false
         schema:
           type: string
       - name: gene_symbol
         in: query
-        description: A comma-separated list of gene symbol(s) of the gene(s) of interest (e.g. SEPT7P1,TIGAR).
+        description: Symbol of the gene of interest (e.g. SEPT7P1).
         required: false
         schema:
           type: string
@@ -142,12 +142,15 @@ paths:
                 type: array
                 items:
                   properties:
-                    include:
-                      type: integer
-                      description: Result of the test. 0 means the gene is not included in the corresponding ceRNA interaction network. 1 mean the gene is a part of the ceRNA network.
+                    data_origin:
+                      type: string
+                      description: Origin of the dataset.
                     disease_name:
                       type: string
                       description: Name of the cancer type/dataset.
+                    include:
+                      type: integer
+                      description: Result of the test. 0 means the gene is not included in the corresponding ceRNA interaction network. 1 mean the gene is a part of the ceRNA network.
                     run_ID:
                       type: integer
                       description: Internal database ID for different runs with SPONGE in the same expression values for one cancer_type/dataset.
@@ -157,7 +160,7 @@ paths:
       tags:
       - ceRNANetwork
       summary: Get all ceRNA interactions the gene(s) of interest is/are involed in.
-      description: Get all ceRNA interactions by given identifications (ensg_number, gene_symbol or gene_type), specific cancer type/dataset or different filter possibilities according different statistical values (e.g. FDR adjusted p-value). 
+      description: Get all ceRNA interactions by given identifications (ensg_number, gene_symbol or gene_type), specific cancer type/dataset or different filter possibilities according different statistical values (e.g. FDR adjusted p-value).
       parameters:
       - name: disease_name
         in: query
@@ -235,9 +238,10 @@ paths:
       - name: pValue
         in: query
         required: false
-        description: Threshold of the FDR adjusted p-value.
+        description: Threshold of the FDR adjusted p-value. Default is 0.05.
         schema:
           type: number
+          default: 0.05
       - name: pValueDirection
         in: query
         required: false
@@ -346,9 +350,6 @@ paths:
                         ensg_number:
                           type: string
                           description: Ensg number of the gene.
-                        gene_ID:
-                          type: integer
-                          description: Internal database ID of the gene.
                         gene_symbol:
                           type: string
                           description: From official gene nomenclature commitees such as HGNC (for human). Source - Ensmble - only provided if available.
@@ -374,9 +375,6 @@ paths:
                         ensg_number:
                           type: string
                           description: Ensg number of the gene.
-                        gene_ID:
-                          type: integer
-                          description: Internal database ID of the gene.
                         gene_symbol:
                           type: string
                           description: From official gene nomenclature commitees such as HGNC (for human). Source - Ensmble - only provided if available.
@@ -386,9 +384,6 @@ paths:
                         start_pos:
                           type: integer
                           description: Starting position of the gene.
-                    interactions_genegene_ID:
-                      type: integer
-                      description: Internal database ID.
                     mscor:
                       type: number
                       description: Multiple senstivity correlation (mscor) of the corresponding ceRNA interaction.
@@ -402,6 +397,9 @@ paths:
                         dataset:
                           type: object
                           properties:
+                            data_origin:
+                              type: string
+                              description: Origin of the dataset.
                             dataset_ID:
                                 type: integer
                                 description: Internal databse ID of the cancer type/dataset.
@@ -483,9 +481,6 @@ paths:
                     gene2:
                       type: string
                       description: Ensg number of the second part of the ceRNA interaction.
-                    interactions_genegene_ID:
-                      type: integer
-                      description: Internal database ID.
                     mscor:
                       type: number
                       description: Multiple senstivity correlation (mscor) of the corresponding ceRNA interaction.
@@ -499,6 +494,9 @@ paths:
                         dataset:
                           type: object
                           properties:
+                            data_origin:
+                              type: string
+                              description: Origin of the dataset.
                             dataset_ID:
                                 type: integer
                                 description: Internal databse ID of the cancer type/dataset.
@@ -573,21 +571,21 @@ paths:
           - unitary_pseudogene
           - unprocessed_pseudogene
           - vaultRNA
-      - name: betweenness
+      - name: minBetweenness
         in: query
-        description: Threshold of the betweenness (lower bound).
+        description: Threshold of the betweenness.
         required: false
         schema:
           type: number
-      - name: degree
+      - name: minNodeDegree
         in: query
-        description: Threshold of the degree (lower bound).
+        description: Threshold of the degree.
         required: false
         schema:
           type: number
-      - name: eigenvector
+      - name: minEigenvector
         in: query
-        description: Threshold of the eigenvektor (lower bound).
+        description: Threshold of the eigenvektor.
         required: false
         schema:
           type: number
@@ -643,19 +641,12 @@ paths:
                         ensg_number:
                           type: string
                           description: Ensg number of the gene.
-                        gene_ID:
-                          type: integer
-                          description: Internal database ID of the gene.
                         gene_symbol:
                           type: string
                           description: From official gene nomenclature commitees such as HGNC (for human). Source - Ensmble - only provided if available.
                       required:
                         - ensg_number
-                        - gene_ID
                         - gene_symbol
-                    network_analysis_ID:
-                      type: integer
-                      description: Internal database ID.
                     node_degree:
                       type: number
                       description: Degree of the corresponding gene (considered as node) in the specific network.
@@ -666,6 +657,9 @@ paths:
                         dataset:
                           type: object
                           properties:
+                            data_origin:
+                              type: string
+                              description: Origin of the dataset.
                             dataset_ID:
                               type: integer
                               description: Internal databse ID of the cancer type/dataset.
@@ -681,6 +675,94 @@ paths:
                       required:
                         - dataset
                         - run_ID
+  /getGeneCount:
+    get:
+      operationId: geneInteraction.getGeneCounts
+      tags:
+      - ceRNANetwork
+      summary: Get the number of times a gene of interest is involved in the complete network or just significant interactions.
+      description: Get the number of times a gene of interest is involved in the complete network or just significant interactions.
+      parameters:
+      - name: disease_name
+        in: query
+        description: Name of the specific cancer type/dataset. Fuzzy search is available (e.g. "kidney clear cell carcinoma" or just "kidney").
+        required: false
+        schema:
+          type: string
+      - name: ensg_number
+        in: query
+        description: A comma-separated list of ensg number(s) of the gene(s) of interest(e.g. ENSG00000259090, ENSG00000217289) (this or gene_symbol is required)
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+          minItems: 0
+        explode: false
+        style: form
+      - name: gene_symbol
+        in: query
+        description: A comma-separated list of gene symbol(s) of the gene of interest(e.g. SEPT7P1,TIGAR) (this or ensg_number is required)
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+          minItems: 0
+        explode: false
+      - name: minCountAll
+        in: query
+        description: Defines the minimal number of times a gene has to be involved in the complete network (e.g. the degree of the corresponding node must be greater than minCountAll).
+        required: false
+        schema:
+          type: integer
+      - name: minCountSign
+        in: query
+        description: Defines the minimal number of times a gene has to be involved in significant (p.adj < 0.05) interactions in the network.
+        required: false
+        schema:
+          type: integer
+      responses:
+        "200":
+          description: Get the number of times a gene of interest is involved in the complete network or just significant interactions.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  properties:
+                    gene:
+                      type: object
+                      description: One of the two interacting ceRNAs.
+                      properties:
+                        ensg_number:
+                          type: string
+                          description: Ensg from Ensemble number of the gene.
+                        gene_symbol:
+                          type: string
+                          description: From official gene nomenclature commitees such as HGNC (for human). Source - Ensmble - only provided if available.
+                      required:
+                        - ensg_number
+                        - gene_symbol
+                    run:
+                      description: Information about specific run and corresponding cancer type/dataset.
+                      type: object
+                      properties:
+                        dataset:
+                          type: string
+                          description: Name of the cancer type/dataset.
+                        run_ID:
+                          type: integer
+                          description: Internal database ID for different runs with SPONGE in the same expression values for one cancer_type/dataset.
+                      required:
+                        - dataset
+                        - run_ID
+                    count_all:
+                      description: Number of times gene is involved in the complete network (equals to degree).
+                      type: string
+                    count_sign:
+                      description: Number of times gene is involved in significant (p.adj < 0.05) interactions of the netwrk.
+                      type: string
   /miRNAInteraction/findSpecific:
     get:
       operationId: geneInteraction.read_all_to_one_mirna
@@ -747,9 +829,6 @@ paths:
                 type: array
                 items:
                   properties:
-                    interacting_miRNAs_ID:
-                      type: integer
-                      description: Internal database ID.
                     interactions_genegene:
                       type: object
                       description: ceRNA interaction the miRNA contributes to.
@@ -795,7 +874,7 @@ paths:
                           description: Internal database ID for different runs with SPONGE in the same expression values for one cancer_type/dataset.
                       required:
                         - dataset
-                        - run_Id
+                        - run_ID
                     miRNA:
                       type: object
                       description: Information about the miRNA(s) of interest - source is miRBase
@@ -806,9 +885,6 @@ paths:
                         id_type:
                           type: string
                           description: Mature, etc miRNA?
-                        miRNA_ID:
-                          type: integer
-                          description: Internal database ID.
                         mir_ID:
                           type: string
                           description: The accession number is the only truly stable identifier for an entry -- miRNA names may change from those published as relationships between sequences become clear.
@@ -914,9 +990,6 @@ paths:
                     occurences:
                       type: integer
                       description: Occurences of the miRNA.
-                    occurences_miRNA_ID:
-                      type: integer
-                      description: Internal database ID.
                     run:
                       description: Information about specific run and corresponding cancer type/dataset.
                       type: object
@@ -924,6 +997,9 @@ paths:
                         dataset:
                           type: object
                           properties:
+                            data_origin:
+                              type: string
+                              description: Origin of the dataset.
                             dataset_ID:
                               type: integer
                               description: Internal databse ID of the cancer type/dataset.
@@ -1029,9 +1105,6 @@ paths:
                 type: array
                 items:
                   properties:
-                    interactions_genegene_ID:
-                      type: integer
-                      description: Internal database ID.
                     interactions_genegene:
                       type: object
                       description: ceRNA interaction the miRNA contributes to.
@@ -1040,7 +1113,7 @@ paths:
                           type: object
                           description: One of the two interacting ceRNAs.
                           properties:
-                            ensg_number: 
+                            ensg_number:
                               type: string
                               description: Ensg from Ensemble number of the gene.
                             gene_symbol:
@@ -1053,7 +1126,7 @@ paths:
                           type: object
                           description: The other part of the ceRNA interaction.
                           properties:
-                            ensg_number: 
+                            ensg_number:
                               type: string
                               description: Ensg from Ensemble number of the gene.
                             gene_symbol:
@@ -1065,7 +1138,7 @@ paths:
                       required:
                         - gene1
                         - gene2
-                    run: 
+                    run:
                       description: Information about specific run and corresponding cancer type/dataset.
                       type: object
                       properties:
@@ -1139,15 +1212,22 @@ paths:
                     dataset:
                       type: string
                       description: Name of the cancer type/dataset.
-                    expr_ID:
-                      type: integer
-                      description: Internal database ID.
                     expr_value:
                       type: number
                       description: Specific expression value for unique gene and sample_ID.
                     gene:
-                      type: string
-                      description: Ensg number of the gene.
+                      type: object
+                      description: Information about the gene.
+                      properties:
+                        ensg_number:
+                          type: string
+                          description: Ensg number of the gene.
+                        gene_symbol:
+                          type: string
+                          description: From official gene nomenclature commitees such as HGNC (for human). Source - Ensmble - only provided if available.
+                      required:
+                      - ensg_number
+                      - gene_symbol
                     sample_ID:
                       type: string
                       description: ID of the specific sample.
@@ -1199,9 +1279,6 @@ paths:
                     dataset:
                       type: string
                       description: Name of the cancer type/dataset.
-                    expr_ID:
-                      type: integer
-                      description: Internal database ID.
                     expr_value:
                       type: number
                       description: Specific expression value for unique gene and sample_ID.
@@ -1246,7 +1323,68 @@ paths:
                   properties:
                     autocompleteSuggestion:
                       type: string
-                      description: One possible autocompletion for the searchString
+                      description: Possible autocompletion for the searchString
+  /getGeneInformation:
+    get:
+      operationId: externalInformation.getGeneInformation
+      tags:
+        - ExternalInformation
+      summary: Get all available information about the gene of iterest.
+      description: Convert ensg_number in gene_symbol or the way around. Be aware, that not all genes have a gene symbol provided.
+      parameters:
+      - name: ensg_number
+        in: query
+        description: A comma-separated list of ensg numbers of the gene(s) of interest (e.g. ENSG00000259090, ENSG00000217289).
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+          minItems: 0
+        explode: false
+        style: form
+      - name: gene_symbol
+        in: query
+        description: A comma-separated list of gene symbol(s) of the gene of interest (e.g. SEPT7P1,TIGAR).
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+          minItems: 0
+        explode: false
+        style: form
+      responses:
+        "200":
+          description: Get all available information about the gene of iterest.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  properties:
+                    chromosome_name:
+                      type: integer
+                      description: Name of the chromosome the gene is located on.
+                    description:
+                      type: string
+                      description: Anntotation from Ensemble of the gene.
+                    end_pos:
+                      type: integer
+                      description: Endposition of the gene.
+                    ensg_number:
+                      type: string
+                      description: Ensg number of the gene.
+                    gene_symbol:
+                      type: string
+                      description: From official gene nomenclature commitees such as HGNC (for human). Source - Ensmble - only provided if available.
+                    gene_type:
+                      type: string
+                      description: The gene type includes both status (e.g. known) and biotype (e.g. protein coding).
+                    start_pos:
+                      type: integer
+                      description: Starting position of the gene.
+
   /survivalAnalysis/sampleInformation:
     get:
       operationId: survivalAnalysis.get_patient_information
@@ -1287,9 +1425,6 @@ paths:
                     disease_status:
                       type: integer
                       description: Information about the disease status (0 = patient is dead, 1 = patient is alive) at the end of observation.
-                    patient_information_ID:
-                      type: integer
-                      description: Internal database ID.
                     sample_ID:
                       type: string
                       description: Unique ID for sample/patient.
@@ -1356,8 +1491,21 @@ paths:
                       type: string
                       description: Name of the cancer type/dataset.
                     gene:
-                      type: string
-                      description: Ensg number of the gene.
+                      type: object
+                      description: Information about the gene.
+                      properties:
+                        ensg_number:
+                          type: string
+                          description: Ensg number of the gene.
+                        gene_symbol:
+                          type: string
+                          description: From official gene nomenclature commitees such as HGNC (for human). Source - Ensmble - only provided if available.
+                      required:
+                      - ensg_number
+                      - gene_symbol
+                    overexpression:
+                      type: integer
+                      description: Information about expression value of the gene (0 = underexpression, gene expression <= mean gene expression over all samples, 1 = overexpression, gene expression >= mean gene expression over all samples)
                     patient_information:
                       type: object
                       description: Information about the sample/patient.
@@ -1371,13 +1519,6 @@ paths:
                         survival_time:
                           type: integer
                           description: Time of survival in days.
-                        overexpression:
-                          type: integer
-                          description: Information about expression value of the gene (0 = underexpression, gene expression <= mean gene expression over all samples, 1 = overexpression, gene expression >= mean gene expression over all samples)
-                      required:
-                        - disease_status
-                        - sample_ID
-                        - overexpression
   /survivalAnalysis/getPValues:
     get:
       operationId: survivalAnalysis.get_survival_pValue
@@ -1427,13 +1568,20 @@ paths:
                       type: string
                       description: information about the dataset
                     gene:
-                      type: string
-                      description: information about the ceRNA
+                      type: object
+                      description: Information about the gene.
+                      properties:
+                        ensg_number:
+                          type: string
+                          description: Ensg number of the gene.
+                        gene_symbol:
+                          type: string
+                          description: From official gene nomenclature commitees such as HGNC (for human). Source - Ensmble - only provided if available.
+                      required:
+                      - ensg_number
+                      - gene_symbol
                     pValue:
                       type: number
                       description: pValue of log rank test
-
-
-
 servers:
 - url: /
