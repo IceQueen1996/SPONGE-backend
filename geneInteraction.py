@@ -624,7 +624,7 @@ def getGeneCounts(disease_name=None, ensg_number=None, gene_symbol=None, minCoun
     # test if not both identification possibilites are given
     if ensg_number is not None and gene_symbol is not None:
         abort(404,
-              "More than one identifikation paramter is given. Please choose one out of (ensg number, gene symbol)")
+              "More than one gene identifier is given. Please choose one out of (ensg number, gene symbol)")
 
     queries = []
     # if specific disease_name is given:
