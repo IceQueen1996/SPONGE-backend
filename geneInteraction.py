@@ -139,13 +139,7 @@ def read_all_genes(disease_name=None, ensg_number=None, gene_symbol=None, gene_t
     if len(tmp) > 0:
         interaction_result.append(tmp)
 
-
-    print("huhu", tmp)
-    print("huhu", interaction_result)
-
     interaction_result = [val for sublist in interaction_result for val in sublist]
-    print("huhu", interaction_result)
-
 
     if len(interaction_result) > 0:
         if information:
@@ -624,8 +618,10 @@ def getGeneCounts(disease_name=None, ensg_number=None, gene_symbol=None, minCoun
     """
 
     # test if any of the two identification possibilities is given or disease_name is specified
-    if ensg_number is None and gene_symbol is None and disease_name is None:
-        abort(404, "One of the two possible identification numbers must be provided or the disease_name must be specified.")
+    if ensg_number is None and gene_symbol is None:
+        if disease_name is None:
+            abort(404, "Please provided disease_name.")
+        abort(404, "More than one gene identifier is given. Please choose one out of (ensg number, gene symbol)).")
 
     queries = []
     # if specific disease_name is given:
