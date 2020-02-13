@@ -2,8 +2,6 @@
 Main module of the server file
 """
 
-# 3rd party moudles
-
 # local modules
 import config
 
@@ -19,4 +17,4 @@ def home():
     return None
 
 if __name__ == "__main__":
-    connex_app.run(debug=True)
+    connex_app.run(debug=False)
