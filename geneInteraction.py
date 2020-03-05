@@ -537,7 +537,6 @@ def read_all_mirna(disease_name=None, mimat_number=None, hs_number=None, occuren
         abort(404, "No information with given parameters found")
 
 
-from copy import deepcopy
 def read_mirna_for_specific_interaction(disease_name=None, ensg_number=None, gene_symbol=None, gene_type=None, between=False):
     """
     This function responds to a request for /sponge/miRNAInteraction/findceRNA
