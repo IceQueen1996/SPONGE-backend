@@ -80,25 +80,25 @@ def read_all_genes(disease_name=None, ensg_number=None, gene_symbol=None, gene_t
     # filter further depending on given statistics cutoffs
     if pValue is not None:
         if pValueDirection == "<":
-            queries_1.append(models.GeneInteraction.p_value < pValue)
-            queries_2.append(models.GeneInteraction.p_value < pValue)
+            queries_1.append(models.GeneInteraction.p_value <= pValue)
+            queries_2.append(models.GeneInteraction.p_value <= pValue)
         else:
-            queries_1.append(models.GeneInteraction.p_value > pValue)
-            queries_2.append(models.GeneInteraction.p_value > pValue)
+            queries_1.append(models.GeneInteraction.p_value >= pValue)
+            queries_2.append(models.GeneInteraction.p_value >= pValue)
     if mscor is not None:
         if mscorDirection == "<":
-            queries_1.append(models.GeneInteraction.mscor < mscor)
-            queries_2.append(models.GeneInteraction.mscor < mscor)
+            queries_1.append(models.GeneInteraction.mscor <= mscor)
+            queries_2.append(models.GeneInteraction.mscor <= mscor)
         else:
-            queries_1.append(models.GeneInteraction.mscor > mscor)
-            queries_2.append(models.GeneInteraction.mscor > mscor)
+            queries_1.append(models.GeneInteraction.mscor >= mscor)
+            queries_2.append(models.GeneInteraction.mscor >= mscor)
     if correlation is not None:
         if correlationDirection == "<":
-            queries_1.append(models.GeneInteraction.correlation < correlation)
-            queries_2.append(models.GeneInteraction.correlation < correlation)
+            queries_1.append(models.GeneInteraction.correlation <= correlation)
+            queries_2.append(models.GeneInteraction.correlation <= correlation)
         else:
-            queries_1.append(models.GeneInteraction.correlation > correlation)
-            queries_2.append(models.GeneInteraction.correlation > correlation)
+            queries_1.append(models.GeneInteraction.correlation >= correlation)
+            queries_2.append(models.GeneInteraction.correlation >= correlation)
 
     # add all sorting if given:
     sort = []
