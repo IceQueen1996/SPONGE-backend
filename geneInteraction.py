@@ -3,7 +3,6 @@ from flask import abort
 from sqlalchemy import desc
 import models
 
-
 def read_all_genes(disease_name=None, ensg_number=None, gene_symbol=None, gene_type=None, pValue=0.05,
                    pValueDirection="<", mscor=None, mscorDirection="<", correlation=None, correlationDirection="<",
                    sorting=None, descending=True, limit=100, offset=0, information=True):
