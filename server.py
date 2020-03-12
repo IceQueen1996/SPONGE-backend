@@ -1,8 +1,9 @@
 """
 Main module of the server file
 """
-import sys
-import os
+#import os
+#from swagger_modifier import replaceAll
+#replaceAll("swagger.yml", "- url", "- url: " + os.getenv("SPONGE_API_URL"))
 
 # local modules
 import config
@@ -18,9 +19,6 @@ connex_app.add_api("swagger.yml")
 def home():
     return None
 
-cli = sys.modules['flask.cli']
-cli.show_server_banner = lambda *x: None
-
-
 if __name__ == "__main__":
     connex_app.run()
+
