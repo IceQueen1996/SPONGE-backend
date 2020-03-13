@@ -118,8 +118,8 @@ def read_all_genes(disease_name=None, ensg_number=None, gene_symbol=None, gene_t
             else:
                 sort.append(models.GeneInteraction.correlation.asc())
 
-    interaction_result = []
-    tmp = models.GeneInteraction.query \
+    #interaction_result = []
+    interaction_result = models.GeneInteraction.query \
         .filter(*queries_1) \
         .order_by(*sort) \
         .union(models.GeneInteraction.query
@@ -128,20 +128,12 @@ def read_all_genes(disease_name=None, ensg_number=None, gene_symbol=None, gene_t
         .slice(offset, offset + limit) \
         .all()
 
-    if len(tmp) > 0:
-        interaction_result.append(tmp)
+    #if len(tmp) > 0:
+    #    interaction_result.append(tmp)
+    #else:
+    #    abort(404, "No information with given parameters found")
 
-    # tmp = models.GeneInteraction.query \
-    #     .filter(*queries_2) \
-    #     .order_by(*sort) \
-    #     .slice(offset, offset + limit) \
-    #     .all()
-    #
-    # if len(tmp) > 0:
-    #     interaction_result.append(tmp)
-
-
-    interaction_result = [val for sublist in interaction_result for val in sublist]
+    #interaction_result = [val for sublist in interaction_result for val in sublist]
 
     if len(interaction_result) > 0:
         if information:
@@ -153,6 +145,7 @@ def read_all_genes(disease_name=None, ensg_number=None, gene_symbol=None, gene_t
         return schema.dump(interaction_result).data
     else:
         abort(404, "No information with given parameters found")
+
 
 
 def read_specific_interaction(disease_name=None, ensg_number=None, gene_symbol=None, pValue=0.05,
