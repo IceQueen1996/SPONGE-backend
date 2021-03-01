@@ -95,6 +95,7 @@ class Gene(db.Model):
     start_pos = db.Column(db.Integer)
     end_pos = db.Column(db.Integer)
     gene_type = db.Column(db.String(32))
+    cytoband = db.Column(db.String(100))
 
 class miRNA(db.Model):
     __tablename__ = "mirna"
@@ -103,7 +104,10 @@ class miRNA(db.Model):
     mir_ID = db.Column(db.String(32))
     seq = db.Column(db.String(32))
     hs_nr = db.Column(db.String(32))
-
+    chr = db.Column(db.String(32))
+    start_position = db.Column(db.Integer)
+    end_position = db.Column(db.Integer)
+    cytoband = db.Column(db.String(100))
 
 class networkAnalysis(db.Model):
     __tablename__ = "network_analysis"
@@ -238,7 +242,7 @@ class GeneSchema(ma.ModelSchema):
     class Meta:
         model = Gene
         sqla_session = db.session
-        fields = ["chromosome_name", "description", "end_pos", "ensg_number", "gene_symbol", "gene_type", "start_pos"]
+        fields = ["chromosome_name", "description", "end_pos", "ensg_number", "gene_symbol", "gene_type", "start_pos", "cytoband"]
 
 class GeneSchemaShort(ma.ModelSchema):
     class Meta:
@@ -311,7 +315,7 @@ class miRNASchema(ma.ModelSchema):
     class Meta:
         model = miRNA
         sqla_session = db.session
-        fields = ["hs_nr", "id_type", "mir_ID", "seq"]
+        fields = ["hs_nr", "id_type", "mir_ID", "seq", "chr", "start_position", "end_position", "cytoband"]
 
 class miRNASchemaShort(ma.ModelSchema):
     class Meta:

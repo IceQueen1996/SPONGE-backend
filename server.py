@@ -8,8 +8,6 @@ Main module of the server file
 # local modules
 import config
 
-
-
 # Get the application instance
 connex_app = config.connex_app
 
