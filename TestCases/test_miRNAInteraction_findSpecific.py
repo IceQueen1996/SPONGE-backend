@@ -3,11 +3,19 @@ import models, geneInteraction, unittest, sqlalchemy as sa
 from flask import abort
 from werkzeug.exceptions import HTTPException
 
-def test_read_all_to_one_mirna(disease_name=None, mimat_number=None, hs_number=None, limit=100, offset=0):
+def test_read_all_to_one_mirna(disease_name=None, mimat_number=None, hs_number=None, pValue=0.05,
+                   pValueDirection="<", mscor=None, mscorDirection="<", correlation=None, correlationDirection="<",
+                   limit=100, offset=0):
     """
     :param disease_name: disease_name of interest
     :param mimat_number: mimat_id( of miRNA of interest
     :param: hs_nr: hs_number of miRNA of interest
+    :param pValue: pValue cutoff
+    :param pValueDirection: < or >
+    :param mscor mscor cutofff
+    :param mscorDirection: < or >
+    :param correlation: correlation cutoff
+    :param correlationDirection: < or >
     :param limit: number of results that should be shown
     :param offset: startpoint from where results should be shown
     :return: all interactions the given miRNA is involved in
@@ -65,11 +73,27 @@ def test_read_all_to_one_mirna(disease_name=None, mimat_number=None, hs_number=N
         geneInteractionIDs = [i.gene_ID for i in gene_interaction]
     else:
         abort(404, "No gene is associated with the given miRNA.")
-    print(len(gene_interaction))
 
     # save all needed queries to get correct results
     queriesGeneInteraction.append(sa.and_(models.GeneInteraction.gene_ID1.in_(geneInteractionIDs),
                                           models.GeneInteraction.gene_ID2.in_(geneInteractionIDs)))
+
+    # filter further depending on given statistics cutoffs
+    if pValue is not None:
+        if pValueDirection == "<":
+            queriesGeneInteraction.append(models.GeneInteraction.p_value <= pValue)
+        else:
+            queriesGeneInteraction.append(models.GeneInteraction.p_value >= pValue)
+    if mscor is not None:
+        if mscorDirection == "<":
+            queriesGeneInteraction.append(models.GeneInteraction.mscor <= mscor)
+        else:
+            queriesGeneInteraction.append(models.GeneInteraction.mscor >= mscor)
+    if correlation is not None:
+        if correlationDirection == "<":
+            queriesGeneInteraction.append(models.GeneInteraction.correlation <= correlation)
+        else:
+            queriesGeneInteraction.append(models.GeneInteraction.correlation >= correlation)
 
     interaction_result = models.GeneInteraction.query \
         .filter(*queriesGeneInteraction) \
@@ -82,6 +106,7 @@ def test_read_all_to_one_mirna(disease_name=None, mimat_number=None, hs_number=N
         return schema.dump(interaction_result).data
     else:
         abort(404, "No data found with input parameter")
+
 
 ########################################################################################################################
 """Test Cases for Endpoint ​/miRNAInteraction​/findSpecific"""
